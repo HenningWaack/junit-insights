@@ -9,11 +9,11 @@ import java.util.Date
  * @see de.adesso.junitinsights.spring.ContextRefreshedListener
  * @see de.adesso.junitinsights.spring.ContextClosedListener
  * @see EventLog
-  */
+ */
 data class Event(
-        var name: String,
-        var timeStamp: Date = Date(),
-        var className: String = "",
-        var methodName: String = "",
-        var successful: Boolean = true
+    var name: String,
+    var timeStamp: Date = Date(),
+    var className: String = "",
+    var methodName: String = "",
+    var successful: Boolean = true
 )

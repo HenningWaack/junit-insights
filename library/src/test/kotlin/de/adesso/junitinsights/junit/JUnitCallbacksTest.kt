@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtensionContext
-import java.util.*
+import java.util.Optional
 
 class JUnitCallbacksTest {
 
@@ -87,7 +87,8 @@ class JUnitCallbacksTest {
     fun excludedTestClassesDoNotLog() {
         // Arrange
         val mockedExtensionContext: ExtensionContext = mockedExtensionContext()
-        //TODO: mock call to context.element in JUnitCallbacks.shouldNotBeBenched to return element with NoJUnitInsights annotation (might require reflection magic)
+        // TODO: mock call to context.element in JUnitCallbacks.shouldNotBeBenched to return element
+        // with NoJUnitInsights annotation (might require reflection magic)
         val callbacks = JUnitCallbacks()
         InsightProperties.enabled = true
 
@@ -102,7 +103,7 @@ class JUnitCallbacksTest {
         val mockedExtensionContext: ExtensionContext = mock()
         whenever(mockedExtensionContext.testClass).thenReturn(Optional.of(this.javaClass))
         whenever(mockedExtensionContext.getConfigurationParameter("de.adesso.junitinsights.enabled"))
-                .thenReturn(Optional.of("true"))
+            .thenReturn(Optional.of("true"))
         return mockedExtensionContext
     }
 }

@@ -1,9 +1,12 @@
 package de.adesso.junitinsights.tools
 
 import de.adesso.junitinsights.model.Event
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import java.util.*
+import java.util.ArrayList
+import java.util.Date
 
 class ReportCreatorTest {
 
@@ -77,7 +80,6 @@ class ReportCreatorTest {
         assertEquals(3 + 7, report.testClasses.first().exec)
         assertEquals(4 + 8, report.testClasses.first().after)
         assertEquals(5, report.testClasses.first().between)
-
     }
 
     @Test

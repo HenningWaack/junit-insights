@@ -12,13 +12,15 @@ import java.time.format.DateTimeFormatter
 object ReportWriter : IReportWriter {
 
     /**
-     * Takes a Report object, inserts the date as JSON in a template file and writes it to disk under a specific file name.
+     * Takes a Report object, inserts the date as JSON in a template file and
+     * writes it to disk under a specific file name.
      * @param report The Report object containing all the information
      */
     override fun writeReport(report: Report) {
         // If JUnit Insights is disabled, the report should not be created
-        if (!InsightProperties.enabled)
+        if (!InsightProperties.enabled) {
             return
+        }
         val json = generateJsonFromReport(report)
         val html = insertJsonInTemplate(json)
         val reportFile = writeHtmlToFile(html, InsightProperties.reportpath, getReportFileName(report))
@@ -34,8 +36,9 @@ object ReportWriter : IReportWriter {
 
     private fun writeHtmlToFile(html: String, path: String, filename: String): File {
         val htmlReportFile = File("$path$filename")
-        if (htmlReportFile.parentFile != null)
+        if (htmlReportFile.parentFile != null) {
             htmlReportFile.parentFile.mkdirs()
+        }
         PrintWriter(htmlReportFile).use { it.write(html) }
         return htmlReportFile
     }

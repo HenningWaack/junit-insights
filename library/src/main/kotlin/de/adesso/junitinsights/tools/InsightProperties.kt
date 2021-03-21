@@ -17,15 +17,16 @@ object InsightProperties {
      * @param context Test extension context containing the necessary information
      */
     fun setConfiguration(context: ExtensionContext) {
-        if (configurationSet)
+        if (configurationSet) {
             return
+        }
 
         reportpath = context.getConfigurationParameter("de.adesso.junitinsights.reportpath")
-                .orElse("build/reports/")
+            .orElse("build/reports/")
 
         enabled = context.getConfigurationParameter("de.adesso.junitinsights.enabled")
-                .orElse("false")!!
-                .toBoolean()
+            .orElse("false")!!
+            .toBoolean()
 
         configurationSet = true
     }

@@ -21,7 +21,7 @@ class NestedSpringTest {
 
     @Test
     fun gameActive() {
-        assertNotEquals(bowlingGame, null);
+        assertNotEquals(bowlingGame, null)
     }
 
     @Nested

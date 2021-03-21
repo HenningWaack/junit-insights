@@ -13,5 +13,6 @@ import org.springframework.boot.runApplication
 class JUnitInsightsTester
 
 fun main(args: Array<String>) {
+    @Suppress("SpreadOperator")
     runApplication<JUnitInsightsTester>(*args)
 }

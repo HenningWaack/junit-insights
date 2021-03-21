@@ -19,8 +19,9 @@ object EventLog {
      */
     fun log(e: Event) {
         // If JUnit Insights is disabled, no events have to be logged
-        if (!InsightProperties.enabled)
+        if (!InsightProperties.enabled) {
             return
+        }
 
         events.add(e)
     }
@@ -44,5 +45,4 @@ object EventLog {
      * @return True if the event is present, false otherwise
      */
     fun containsEventWithName(str: String) = events.map { it.name }.contains(str)
-
 }

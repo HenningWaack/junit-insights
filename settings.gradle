@@ -1,3 +1,17 @@
+pluginManagement {
+    //noinspection GroovyAssignabilityCheck
+    plugins {
+        id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+        id "org.jetbrains.kotlin.plugin.allopen" version "${kotlinVersion}"
+        id "org.jetbrains.dokka" version "${kotlinVersion}"
+        id "org.jetbrains.kotlin.spring" version "${springBootVersion}"
+        id "org.springframework.boot" version "${springBootVersion}"
+        id "com.github.ben-manes.versions" version "${dependenciesVersionCheckVersion}" // plugin to check dependency updates
+        id "io.gitlab.arturbosch.detekt" version "${detektVersion}"
+    }
+}
+
+
 rootProject.name = 'junit-insights'
 include 'library'
 include 'tester'

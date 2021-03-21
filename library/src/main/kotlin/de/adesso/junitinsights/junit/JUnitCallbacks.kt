@@ -1,25 +1,35 @@
+@file:Suppress("TooManyFunctions", "MaxLineLength", "Indentation")
 package de.adesso.junitinsights.junit
 
 import de.adesso.junitinsights.annotations.NoJUnitInsights
 import de.adesso.junitinsights.model.Event
 import de.adesso.junitinsights.model.EventLog
-import de.adesso.junitinsights.tools.*
-import org.junit.jupiter.api.extension.*
+import de.adesso.junitinsights.tools.IReportCreator
+import de.adesso.junitinsights.tools.IReportWriter
+import de.adesso.junitinsights.tools.InsightProperties
+import de.adesso.junitinsights.tools.ReportCreator
+import de.adesso.junitinsights.tools.ReportWriter
+import org.junit.jupiter.api.extension.AfterAllCallback
+import org.junit.jupiter.api.extension.AfterEachCallback
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback
+import org.junit.jupiter.api.extension.BeforeAllCallback
+import org.junit.jupiter.api.extension.BeforeEachCallback
+import org.junit.jupiter.api.extension.BeforeTestExecutionCallback
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.platform.commons.support.AnnotationSupport.isAnnotated
 import org.junit.platform.launcher.TestExecutionListener
 import org.junit.platform.launcher.TestPlan
-import java.util.*
-
+import java.util.Date
 
 /**
  * Extension that measures the execution time of each test class and method.
  * It implements the callback-functions of the JUnit5 Jupiter API.
  */
 class JUnitCallbacks :
-        BeforeAllCallback, AfterAllCallback,
-        BeforeEachCallback, AfterEachCallback,
-        BeforeTestExecutionCallback, AfterTestExecutionCallback,
-        TestExecutionListener {
+    BeforeAllCallback, AfterAllCallback,
+    BeforeEachCallback, AfterEachCallback,
+    BeforeTestExecutionCallback, AfterTestExecutionCallback,
+    TestExecutionListener {
 
     private val reportWriter: IReportWriter = ReportWriter
     private val reportCreator: IReportCreator = ReportCreator
@@ -69,7 +79,8 @@ class JUnitCallbacks :
      * "Callback that is invoked immediately after each test has been executed." (from documentation)
      * @see <a href="https://junit.org/junit5/docs/5.0.2/api/org/junit/jupiter/api/extension/AfterTestExecutionCallback.html">Documentation</a>
      */
-    override fun afterTestExecution(context: ExtensionContext) = saveTimestamp("after test execution", context, context.executionException.isPresent)
+    override fun afterTestExecution(context: ExtensionContext) =
+        saveTimestamp("after test execution", context, context.executionException.isPresent)
 
     /**
      * Gets called after the complete test plan has been executed, so the report can be generated.
@@ -80,8 +91,9 @@ class JUnitCallbacks :
     }
 
     private fun saveTimestamp(event: String, context: ExtensionContext, testFailing: Boolean = false) {
-        if (shouldNotBeBenched(context))
+        if (shouldNotBeBenched(context)) {
             return
+        }
 
         EventLog.log(Event(event, Date(), getClassName(context), getMethodName(context), !testFailing))
     }
@@ -92,21 +104,21 @@ class JUnitCallbacks :
      * @see NoJUnitInsights
      */
     private fun shouldNotBeBenched(context: ExtensionContext) =
-            context.element
-                    .map<Boolean> { el -> isAnnotated(el, NoJUnitInsights::class.java) }
-                    .orElse(false)
+        context.element
+            .map { el -> isAnnotated(el, NoJUnitInsights::class.java) }
+            .orElse(false)
 
     /**
      * Helper function to get the displayName of the test class, if a class is present.
      * @param context Context provided by JUnit 5
      */
     private fun getMethodName(context: ExtensionContext) =
-            if (context.testMethod.toString() == "Optional.empty") "" else context.displayName
+        if (context.testMethod.toString() == "Optional.empty") "" else context.displayName
 
     /**
      * Helper function to remove the package names in front of the class name.
      * @param context Context provided by JUnit 5
      */
     private fun getClassName(context: ExtensionContext) =
-            context.testClass.get().toString().substringAfterLast(".")
+        context.testClass.get().toString().substringAfterLast(".")
 }

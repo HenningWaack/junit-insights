@@ -10,7 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 /**
  * Some basic tests
  */
-//@JUnitInsights
+// @JUnitInsights
 @SpringBootTest
 @ExtendWith(SpringExtension::class)
 class NewTest {

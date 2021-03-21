@@ -11,7 +11,7 @@ import org.springframework.context.event.ContextClosedEvent
  * @see BenchmarkContextCustomizerFactory
  */
 @Suppress("unused", "UNUSED_PARAMETER")
-class ContextClosedListener: ApplicationListener<ContextClosedEvent> {
+class ContextClosedListener : ApplicationListener<ContextClosedEvent> {
 
     /**
      * Logs the closing of Spring Contexts during testing.

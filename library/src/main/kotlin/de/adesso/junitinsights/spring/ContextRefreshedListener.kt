@@ -11,7 +11,7 @@ import org.springframework.context.event.ContextRefreshedEvent
  * @see BenchmarkContextCustomizerFactory
  */
 @Suppress("unused", "UNUSED_PARAMETER")
-class ContextRefreshedListener: ApplicationListener<ContextRefreshedEvent> {
+class ContextRefreshedListener : ApplicationListener<ContextRefreshedEvent> {
 
     /**
      * Logs the creation and refreshing of Spring Contexts during testing.

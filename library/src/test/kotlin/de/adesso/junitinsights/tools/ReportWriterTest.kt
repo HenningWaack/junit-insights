@@ -3,19 +3,23 @@ package de.adesso.junitinsights.tools
 import com.google.gson.Gson
 import de.adesso.junitinsights.model.Report
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
-import java.util.*
+import java.io.FileNotFoundException
+import java.util.Date
 
+@Suppress("UnusedPrivateMember")
 class ReportWriterTest {
 
     @AfterEach
     private fun restoreCleanEnvironment() {
         val dir = File(InsightProperties.reportpath)
-        if (dir.exists())
-            dir.listFiles()
-                    .forEach { it.delete() }
+        if (dir.exists()) {
+            dir.listFiles()?.forEach { it.delete() }
+        }
         InsightProperties.enabled = false
         InsightProperties.reportpath = ""
     }
@@ -31,7 +35,8 @@ class ReportWriterTest {
         ReportWriter.writeReport(originalReport)
 
         // Assert
-        val firstFile = File(InsightProperties.reportpath).listFiles().first()
+        val firstFile = File(InsightProperties.reportpath).listFiles()?.first()
+            ?: throw FileNotFoundException("expected file to exist")
         assertTrue(firstFile.exists())
 
         val json = extractJsonFromFile(firstFile)
@@ -56,8 +61,9 @@ class ReportWriterTest {
 
         // Assert
         val dir = File(InsightProperties.reportpath)
-        if (dir.exists())
+        if (dir.exists()) {
             assertEquals(0, dir.listFiles().size)
+        }
     }
 
     private fun extractJsonFromFile(file: File): String {

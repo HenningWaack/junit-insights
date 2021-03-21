@@ -6,8 +6,7 @@ import de.adesso.junitinsights.model.TestClass
 import de.adesso.junitinsights.model.TestMethod
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Date
 
 object ReportCreator : IReportCreator {
 
@@ -38,16 +37,15 @@ object ReportCreator : IReportCreator {
         val methods = eventsGroupedByMethods.map { methodEvents -> processMethodEvents(methodEvents) }
 
         for (i in 1 until events.size) {
-            when {
-                events[i].name == "after all" -> afterAll += events[i].timeStamp.time - events[i - 1].timeStamp.time
-                events[i].name == "before each" -> {
-                    if (events[i - 1].name == "context refreshed" || events[i - 1].name == "before all")
-                        beforeAll += events[i].timeStamp.time - events[i - 1].timeStamp.time
+            if (events[i].name == "after all") {
+                afterAll += events[i].timeStamp.time - events[i - 1].timeStamp.time
+            } else if (events[i].name == "before each") {
+                if (events[i - 1].name == "context refreshed" || events[i - 1].name == "before all") {
+                    beforeAll += events[i].timeStamp.time - events[i - 1].timeStamp.time
                 }
-                events[i].name == "context refreshed" -> {
-                    spring += events[i].timeStamp.time - events[i - 1].timeStamp.time
-                    contextCount++
-                }
+            } else if (events[i].name == "context refreshed") {
+                spring += events[i].timeStamp.time - events[i - 1].timeStamp.time
+                contextCount++
             }
         }
 
@@ -55,9 +53,22 @@ object ReportCreator : IReportCreator {
         val exec = methods.asSequence().map { method -> method.exec }.sum()
         val after = methods.asSequence().map { method -> method.after }.sum()
 
-        val between = events.last().timeStamp.time - events.first().timeStamp.time - beforeAll - spring - afterAll - before - exec - after
+        val eventsTime = events.last().timeStamp.time - events.first().timeStamp.time
+        val between = eventsTime - beforeAll - spring - afterAll - before - exec - after
 
-        return TestClass(events.last().className, events[0].timeStamp.time, methods, beforeAll, before, exec, after, afterAll, between, spring, contextCount)
+        return TestClass(
+            events.last().className,
+            events[0].timeStamp.time,
+            methods,
+            beforeAll,
+            before,
+            exec,
+            after,
+            afterAll,
+            between,
+            spring,
+            contextCount
+        )
     }
 
     /**
@@ -71,8 +82,9 @@ object ReportCreator : IReportCreator {
         var afterTestExecution = 0L
         var firstTimestamp = events[0].timeStamp.time
 
-        if (events[0].name != "before each")
+        if (events[0].name != "before each") {
             firstTimestamp = events[1].timeStamp.time
+        }
 
         for (event in events) {
             when (event.name) {
@@ -84,31 +96,33 @@ object ReportCreator : IReportCreator {
         }
 
         return TestMethod(
-                events.last().methodName,
-                firstTimestamp,
-                beforeEach,
-                afterEach,
-                beforeTestExecution - beforeEach,
-                afterTestExecution - beforeTestExecution,
-                afterEach - afterTestExecution,
-                events.last().successful
+            events.last().methodName,
+            firstTimestamp,
+            beforeEach,
+            afterEach,
+            beforeTestExecution - beforeEach,
+            afterTestExecution - beforeTestExecution,
+            afterEach - afterTestExecution,
+            events.last().successful
         )
     }
 
     private fun groupEventsByClass(events: List<Event>): List<List<Event>> {
         val eventGroups = groupEventsAfterKeyword(events, "after all")
 
-        if (eventGroups.isEmpty())
+        if (eventGroups.isEmpty()) {
             return eventGroups
+        }
 
         val trimmedEventGroups = ArrayList<ArrayList<Event>>()
 
         trimmedEventGroups.add(ArrayList(eventGroups[0]))
-        for (i in (1 until eventGroups.size)) {
-            if (getClassNameFromGroup(trimmedEventGroups.last()) == getClassNameFromGroup(eventGroups[i]))
+        for (i in 1 until eventGroups.size) {
+            if (getClassNameFromGroup(trimmedEventGroups.last()) == getClassNameFromGroup(eventGroups[i])) {
                 trimmedEventGroups.last().addAll(eventGroups[i])
-            else
+            } else {
                 trimmedEventGroups.add(ArrayList(eventGroups[i]))
+            }
         }
 
         return trimmedEventGroups
@@ -116,8 +130,9 @@ object ReportCreator : IReportCreator {
 
     private fun getClassNameFromGroup(eventGroup: List<Event>): String {
         for (event in eventGroup) {
-            if (event.className != "")
+            if (event.className != "") {
                 return event.className.split("$")[0]
+            }
         }
         return ""
     }

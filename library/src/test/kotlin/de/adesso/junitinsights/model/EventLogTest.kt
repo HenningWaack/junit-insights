@@ -1,11 +1,12 @@
 package de.adesso.junitinsights.model
 
+import de.adesso.junitinsights.model.EventLog.log
 import de.adesso.junitinsights.tools.InsightProperties
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.util.*
+import java.util.Date
 
 class EventLogTest {
 
@@ -25,12 +26,12 @@ class EventLogTest {
     fun clearEvents() = EventLog.clearEvents()
 
     private fun createTestEvents() {
-        EventLog.log(Event("before all", Date(0), "test-class"))
-        EventLog.log(Event("context refreshed", Date(1)))
-        EventLog.log(Event("before each", Date(3), "test-class", "test-method"))
-        EventLog.log(Event("before test execution", Date(6), "test-class", "test-method"))
-        EventLog.log(Event("after test execution", Date(10), "test-class", "test-method"))
-        EventLog.log(Event("after each", Date(15), "test-class", "test-method"))
-        EventLog.log(Event("after all", Date(21), "test-class"))
+        log(Event("before all", Date(0), "test-class"))
+        log(Event("context refreshed", Date(1)))
+        log(Event("before each", Date(3), "test-class", "test-method"))
+        log(Event("before test execution", Date(6), "test-class", "test-method"))
+        log(Event("after test execution", Date(10), "test-class", "test-method"))
+        log(Event("after each", Date(15), "test-class", "test-method"))
+        log(Event("after all", Date(21), "test-class"))
     }
 }

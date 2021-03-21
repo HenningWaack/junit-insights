@@ -7,15 +7,15 @@ package de.adesso.junitinsights.model
  * @see Report
  */
 data class TestClass(
-        var name: String,
-        var firstTimestamp: Long,
-        var methods: List<TestMethod>,
-        var beforeAll: Long,
-        var before: Long,
-        var exec: Long,
-        var after: Long,
-        var afterAll: Long,
-        var between: Long,
-        var spring: Long,
-        var springContextCount: Int
+    var name: String,
+    var firstTimestamp: Long,
+    var methods: List<TestMethod>,
+    var beforeAll: Long,
+    var before: Long,
+    var exec: Long,
+    var after: Long,
+    var afterAll: Long,
+    var between: Long,
+    var spring: Long,
+    var springContextCount: Int
 )

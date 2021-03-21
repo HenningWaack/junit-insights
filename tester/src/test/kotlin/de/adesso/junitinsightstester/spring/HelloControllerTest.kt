@@ -37,21 +37,25 @@ class HelloControllerTest {
     @DisplayName("First test method")
     fun getHello() {
         logger.info("### Test 1 started ###")
-        mvc.perform(MockMvcRequestBuilders
+        mvc.perform(
+            MockMvcRequestBuilders
                 .get("/")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk)
-                .andExpect(content().string(equalTo("Greetings from Spring Boot!")))
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().string(equalTo("Greetings from Spring Boot!")))
     }
 
     @Test
     @DisplayName("Second test method")
     fun getAnotherHello() {
         logger.info("### Test 2 started ###")
-        mvc.perform(MockMvcRequestBuilders
+        mvc.perform(
+            MockMvcRequestBuilders
                 .get("/")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk)
-                .andExpect(content().string(equalTo("Greetings from Spring Boot!")))
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().string(equalTo("Greetings from Spring Boot!")))
     }
 }
