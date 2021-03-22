@@ -1,6 +1,7 @@
 package de.adesso.junitinsights.model
 
 import de.adesso.junitinsights.tools.InsightProperties
+import de.adesso.junitinsights.tools.InsightsLogger.log_debug
 
 /**
  * Central object for storing Events during testing
@@ -22,6 +23,8 @@ object EventLog {
         if (!InsightProperties.enabled) {
             return
         }
+
+        log_debug(e.name)
 
         events.add(e)
     }

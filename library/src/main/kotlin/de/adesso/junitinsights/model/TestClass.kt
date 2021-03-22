@@ -17,5 +17,6 @@ data class TestClass(
     var afterAll: Long,
     var between: Long,
     var spring: Long,
-    var springContextCount: Int
+    var springContextCount: Int,
+    var activeSpringProfiles: List<String>
 )

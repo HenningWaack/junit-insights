@@ -23,7 +23,7 @@ class JUnitCallbacksTest {
         callbacks.beforeAll(mockedExtensionContext)
 
         // Assert
-        assertTrue(InsightProperties.configurationSet)
+        assertTrue(InsightProperties.isInitialized)
     }
 
     @Test

@@ -1,4 +1,3 @@
-[ ![Download](https://api.bintray.com/packages/adesso/junit-insights/junit-insights/images/download.svg) ](https://bintray.com/adesso/junit-insights/junit-insights)
 [![Build Status](https://travis-ci.org/adessoAG/junit-insights.svg?branch=master)](https://travis-ci.org/adessoAG/junit-insights)
 [![codebeat badge](https://codebeat.co/badges/bac44e06-3560-4c28-814c-b5495bfa3c28)](https://codebeat.co/projects/github-com-adessoag-junit-insights-master)
 # JUnit Insights
@@ -26,21 +25,19 @@ test {
 }
 ```
 
-Maven:
-```xml
-<plugins>
-...
-    <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.0</version>
-        <configuration>
-            <systemPropertyVariables>
-                <de.adesso.junitinsights.enabled>true</de.adesso.junitinsights.enabled>
-            </systemPropertyVariables>
-        </configuration>
-    </plugin>
-...
-</plugins>
+If you have a custom sourceSet and configuration (e.g. one for integrationTest), then you have to add the systemProperty also to this task:
+
+```gradle
+    task integrationTest(type: Test) {
+        description = 'Runs the integration tests.'
+        group = 'verification'
+        testClassesDirs = sourceSets.integrationTest.output.classesDirs
+        classpath = sourceSets.integrationTest.runtimeClasspath
+        shouldRunAfter test
+        // enable junit insights
+        systemProperty 'de.adesso.junitinsights.enabled', 'true'
+        systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    }
 ```
 
 ## Adding individual classes to the benchmark
@@ -60,24 +57,6 @@ test {
 }
 ```
 
-Maven:
-```xml
-<plugins>
-...
-    <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.0</version>
-        <configuration>
-            <systemPropertyVariables>
-                <de.adesso.junitinsights.enabled>true</de.adesso.junitinsights.enabled>
-                <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
-            </systemPropertyVariables>
-        </configuration>
-    </plugin>
-...
-</plugins>
-```
-
 Further information can be found [here](https://junit.org/junit5/docs/current/user-guide/#extensions-registration-automatic)
 
 ## Changing the destination path for the reports
@@ -89,24 +68,6 @@ Gradle:
 test {
     systemProperty 'de.adesso.junitinsights.reportpath', 'custom/report/directory/'
 }
-```
-Maven:
-```xml
-<plugins>
-...
-    <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.0</version>
-        <configuration>
-            <systemPropertyVariables>
-                <de.adesso.junitinsights.enabled>true</de.adesso.junitinsights.enabled>
-                <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
-                <de.adesso.junitinsights.reportpath>reports/</de.adesso.junitinsights.reportpath>
-            </systemPropertyVariables>
-        </configuration>
-    </plugin>
-...
-</plugins>
 ```
 
 # Dependency
@@ -129,119 +90,11 @@ dependencies {
 }
 ```
 
-Maven:
-
-```xml
-<repositories>
-    <repository>
-        <id>jcenter</id>
-        <url>https://jcenter.bintray.com/</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>de.adesso</groupId>
-        <artifactId>junit-insights</artifactId>
-        <version>1.1.0</version>
-    </dependency>
-</dependencies>
-```
-
-## Release version from [Bintray](https://bintray.com/adesso/junit-insights/junit-insights)
-
-If the JCenter repository does not work for some reason, or you are not satisfied with using it, you can use the Bintray repository dicrectly, too.
-
-Gradle:
-
-```gradle
-repositories {
-    maven {
-        url  "https://dl.bintray.com/adesso/junit-insights"
-    }
-}
-
-dependencies {
-    testCompile ('de.adesso:junit-insights:1.1.0')
-}
-```
-
-Maven:
-
-```xml
-<repositories>
-    <repository>
-        <id>bintray.com</id>
-        <url>https://dl.bintray.com/adesso/junit-insights</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>de.adesso</groupId>
-        <artifactId>junit-insights</artifactId>
-        <version>1.1.0</version>
-    </dependency>
-</dependencies>
-```
-
-## SNAPSHOT version from [oss.jfrog.org](https://oss.jfrog.org/webapp/#/artifacts/browse/tree/General/oss-snapshot-local/de/adesso/junit-insights)
-
-For the most recent SNAPSHOT version of JUnit Insights, you can also use the artifactory repository oss.jfrog.org.
-
-Gradle:
-
-```gradle
-repositories {
-    maven {
-        url  "https://oss.jfrog.org/artifactory/oss-snapshot-local"
-    }
-}
-
-dependencies {
-    testCompile ('de.adesso:junit-insights:1.1.0-SNAPSHOT')
-}
-```
-
-Maven:
-
-```xml
-<repositories>
-    <repository>
-        <id>oss-snapshot-local</id>
-        <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>de.adesso</groupId>
-        <artifactId>junit-insights</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
-    </dependency>
-</dependencies>
-```
-
 ## For local development
-If you want to test a local version of this project in a different project than the `tester/`, build the jar and include it in your project like so:
+If you want to test a local version of this project in a different project than the `tester/`, build the jar and publish it locally:
 
-Gradle:
-
-```gradle
-dependencies {
-    testCompile files('../junit-insights/library/build/libs/junit-insights-1.1.0.jar')
-}
-```
-Maven:
-
-```xml
-<dependency>
-    <groupId>de.adesso</groupId>
-    <artifactId>junit-insights</artifactId>
-    <version>1.1.0</version>
-    <scope>system</scope>
-    <systemPath>${basedir}/../junit-insights/library/build/libs/junit-insights-1.1.0.jar</systemPath>
-</dependency>
+```shell
+./gradlew publishToMavenLocal
 ```
 
 # How time is measured

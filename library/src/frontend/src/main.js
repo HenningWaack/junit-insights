@@ -32,7 +32,8 @@ var report = {
         "afterAll": 2,
         "between": 0,
         "spring": 2886,
-        "springContextCount": 1
+        "springContextCount": 1,
+        "activeSpringProfiles": ["local", "test"]
     }, {
         "name": "HelloControllerTest",
         "firstTimestamp": 1555083345982,
@@ -58,7 +59,8 @@ var report = {
         "afterAll": 0,
         "between": 0,
         "spring": 0,
-        "springContextCount": 0
+        "springContextCount": 0,
+        "activeSpringProfiles": []
     }, {
         "name": "NestedSpringTest",
         "firstTimestamp": 1555083346016,
@@ -98,7 +100,8 @@ var report = {
         "afterAll": 2,
         "between": 3,
         "spring": 850,
-        "springContextCount": 2
+        "springContextCount": 2,
+        "activeSpringProfiles": ["local", "test"]
     }, {
         "name": "NewTest",
         "firstTimestamp": 1555083346910,

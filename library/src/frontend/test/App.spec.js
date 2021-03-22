@@ -20,7 +20,8 @@ var dummyReport = {
                 }
             ],
             "beforeAll": 19,
-            "before": 2, "exec": 4, "after": 1, "afterAll": 4, "between": 0, "spring": 0
+            "before": 2, "exec": 4, "after": 1, "afterAll": 4, "between": 0, "spring": 0,
+            "activeSpringProfiles": ["default"]
         },
         {
             "name": "NewTest",

@@ -4,6 +4,7 @@ import de.adesso.junitinsights.model.Event
 import de.adesso.junitinsights.model.EventLog
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
+import org.springframework.context.event.ContextStartedEvent
 
 /**
  * Listens to the Spring ContextRefreshedEvent to register starting of the context
@@ -11,13 +12,14 @@ import org.springframework.context.event.ContextRefreshedEvent
  * @see BenchmarkContextCustomizerFactory
  */
 @Suppress("unused", "UNUSED_PARAMETER")
-class ContextRefreshedListener : ApplicationListener<ContextRefreshedEvent> {
+class ContextStartedListener : ApplicationListener<ContextStartedEvent> {
 
     /**
-     * Logs the creation and refreshing of Spring Contexts during testing.
+     * Logs when a new context is started during testing.
      * @see EventLog
      */
-    override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        EventLog.log(Event("context refreshed", applicationContext = event.applicationContext))
+    override fun onApplicationEvent(event: ContextStartedEvent) {
+        val activeProfiles = event.applicationContext.environment.activeProfiles
+        EventLog.log(Event("context started"))
     }
 }

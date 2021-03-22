@@ -2,6 +2,7 @@
     <div class="classChart">
         <button class="btn btn-sm btn-light expandButton" @click="expanded = !expanded">{{expanded ? "-" : "+"}}</button>
         <h2 style="display: inline;">{{this.testClass.name}} ({{ this.totalTimeClass(this.testClass) }}ms)</h2>
+        <h6 style="display: inline;">Profiles: {{ this.activeSpringProfiles(this.testClass)}}</h6>
         <div v-if="shouldDraw()">
             <div :id="chartId" class="chartCanvas"></div>
             <div v-if="expanded">

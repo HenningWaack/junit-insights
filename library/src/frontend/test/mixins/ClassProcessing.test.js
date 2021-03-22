@@ -17,7 +17,8 @@ describe("ClassProcessing.js", () => {
             after: 2,
             afterAll: 2,
             between: 2,
-            spring: 108
+            spring: 108,
+            activeSpringProfiles: ["default"]
         }
         expect(ClassProcessing.methods.totalTimeClass(testClass)).toEqual(120)
     })
@@ -29,7 +30,8 @@ describe("ClassProcessing.js", () => {
             after: 2,
             afterAll: 2,
             between: 2,
-            spring: 108
+            spring: 108,
+            activeSpringProfiles: []
         }
         expect(ClassProcessing.methods.springShare(testClass)).toEqual(0.9)
     })

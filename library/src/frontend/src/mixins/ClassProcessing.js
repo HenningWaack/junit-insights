@@ -29,6 +29,9 @@ var ClassProcessing = {
             if (this.totalTimeClass(testClass) <= 0)
                 return 0;
             return testClass.spring / this.totalTimeClass(testClass);
+        },
+        activeSpringProfiles(testClass) {
+            return testClass.activeSpringProfiles
         }
     }
 };

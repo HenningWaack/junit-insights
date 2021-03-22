@@ -36,6 +36,8 @@ object ReportCreator : IReportCreator {
         val eventsGroupedByMethods = groupEventsByMethod(events)
         val methods = eventsGroupedByMethods.map { methodEvents -> processMethodEvents(methodEvents) }
 
+        val activeProfiles = mutableListOf<String>()
+
         for (i in 1 until events.size) {
             if (events[i].name == "after all") {
                 afterAll += events[i].timeStamp.time - events[i - 1].timeStamp.time
@@ -46,6 +48,10 @@ object ReportCreator : IReportCreator {
             } else if (events[i].name == "context refreshed") {
                 spring += events[i].timeStamp.time - events[i - 1].timeStamp.time
                 contextCount++
+                activeProfiles.addAll(
+                    events[i].applicationContext?.environment?.activeProfiles?.toList()
+                        ?: emptyList()
+                )
             }
         }
 
@@ -57,17 +63,18 @@ object ReportCreator : IReportCreator {
         val between = eventsTime - beforeAll - spring - afterAll - before - exec - after
 
         return TestClass(
-            events.last().className,
-            events[0].timeStamp.time,
-            methods,
-            beforeAll,
-            before,
-            exec,
-            after,
-            afterAll,
-            between,
-            spring,
-            contextCount
+            name = events.last().className,
+            firstTimestamp = events[0].timeStamp.time,
+            methods = methods,
+            beforeAll = beforeAll,
+            before = before,
+            exec = exec,
+            after = after,
+            afterAll = afterAll,
+            between = between,
+            spring = spring,
+            springContextCount = contextCount,
+            activeSpringProfiles = activeProfiles
         )
     }
 

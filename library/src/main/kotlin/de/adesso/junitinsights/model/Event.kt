@@ -1,5 +1,6 @@
 package de.adesso.junitinsights.model
 
+import org.springframework.context.ApplicationContext
 import java.util.Date
 
 /**
@@ -15,5 +16,6 @@ data class Event(
     var timeStamp: Date = Date(),
     var className: String = "",
     var methodName: String = "",
-    var successful: Boolean = true
+    var successful: Boolean = true,
+    var applicationContext: ApplicationContext? = null
 )

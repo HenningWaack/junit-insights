@@ -1,5 +1,6 @@
 package de.adesso.junitinsights.tools
 
+import de.adesso.junitinsights.tools.InsightsLogger.log_info
 import org.junit.jupiter.api.extension.ExtensionContext
 
 /**
@@ -8,16 +9,17 @@ import org.junit.jupiter.api.extension.ExtensionContext
  * @see de.adesso.junitinsights.junit.JUnitCallbacks.beforeAll
  */
 object InsightProperties {
-    internal var configurationSet = false
+    internal var isInitialized = false
     var reportpath: String = "build/reports/"
     var enabled: Boolean = false
+    var logLevel: InsightsLogLevel = InsightsLogLevel.INFO
 
     /**
      * Initialize the object with data retrieved from an extension context.
      * @param context Test extension context containing the necessary information
      */
     fun setConfiguration(context: ExtensionContext) {
-        if (configurationSet) {
+        if (isInitialized) {
             return
         }
 
@@ -28,6 +30,13 @@ object InsightProperties {
             .orElse("false")!!
             .toBoolean()
 
-        configurationSet = true
+        logLevel = InsightsLogLevel.valueOf(
+            context.getConfigurationParameter("de.adesso.junitinsights.loglevel")
+                .orElse("INFO")!!
+        )
+
+        log_info("Junit Insights enabled: $enabled")
+
+        isInitialized = true
     }
 }
